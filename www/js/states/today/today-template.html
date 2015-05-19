@@ -1,13 +1,12 @@
-<ion-view view-title="{{todayCtrl.today}}" ng-controller="TodayCtrl as todayCtrl">
+	<ion-view view-title="{{todayCtrl.today}}" ng-controller="TodayCtrl as todayCtrl">
   <ion-content class="padding">
-  		<p class="score mbs">
+  		<p class="score mbs" style="margin-top: -7px;">
 	      <span class="points">Score: {{todayCtrl.points}}</span>
 	      <span class="after"></span>
 	    </p>
     <div class="list card no-mt mbm">
       <div class="item item-divider">Prestaties</div>
-      	<div class="pal">Geweldig dat je bezig bent met spraak! Hieronder kun je doormiddel van de vier knoppen makkelijk,
-      	je gegevens invullen.</div>
+      	<div class="pal">Geweldig dat je bezig bent met spraak!</div>
       <div class="item item-body border-top" ng-click="todayCtrl.increase('stoppen')">
         <div>
 	         <div class="icon-button left ptm" style="">
@@ -67,7 +66,7 @@
            
         </div>
       </div>
-      <div class="item item-body border-top-neg">
+      <div class="item item-body border-top-neg" ng-click="todayCtrl.increase('stotteren')">
         <div>
         	<span class="ion-chatbubble chat"><span class="ion-close close"></span></span>
         	<div class="plxxl inline-block">
@@ -76,15 +75,24 @@
           </div>
         </div>
       </div>
+      <div class="item item-body">
+      		<div class="left">
+      			<span class="ion-document-text chat" style="margin-left: -2px;"></span>
+      		</div>
+      		<div class="plxxl inline-block">
+	           Notities
+	          <span class="icon ion-edit plus-button"></span>
+          </div>
+      </div>
     </div>
 
 	    <p class="ch-10">
-	      <span class="points">{{todayCtrl.challengePoint}} ptn!</span>
+	      <span class="points-stutter">{{todayCtrl.challengePoint}} ptn!</span>
 	      <span class="after"></span>
 	    </p>
 
 	     <p class="pt-10">
-	      <span class="points">{{todayCtrl.stopPoint}} ptn!</span>
+	      <span class="points-stutter">{{todayCtrl.stopPoint}} ptn!</span>
 	      <span class="after"></span>
 	    </p>
 

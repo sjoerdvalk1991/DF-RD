@@ -100,10 +100,38 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
   }
 
 
+  this.dateFix = function(){
+    dateArray = [];
+    dailySession = JSON.parse(localStorage.getItem('dailyData'));
+    j = 0;
+    for (; j < dailySession.length; j++) {
+      var date = dailySession[j].date;
+      dateFormat(date);
+    }
+    function dateFormat(date){
+      var year = date.substr(6,4);
+      var month = date.substr(3,2);
+      var day = date.substr(0,2);
+      dailyDate = {
+        date: year+'-'+month+'-'+day
+      }
+      var day = moment(dailyDate.date, "yyyy-MM-DD");
+      // console.log(day);
+      dateArray.push(day);
+    }
+    
+      // console.log(dateArray);
+      localStorage.setItem('calenderData', JSON.stringify(dateArray));
+    
+  }
+
+
+
+
   this.increase = function(type){
     if(type == 'stotteren'){
      _this.stutter++;
-
+     _this.dayresultSaver();
      $('.pt-stutter').show();
       $('.pt-stutter').animo( {
         animation: 'fadeInUp', duration: 1.4}, function() {
@@ -129,6 +157,7 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
 
     }else if(type == 'stoppen'){
       _this.stop++;
+      _this.dayresultSaver();
        _this.stopPoint = (_this.stopPoint + 10);
       $('.pt-10').show();
       $('.pt-10').animo( {
@@ -155,6 +184,7 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
 
       }else if(type == 'telefoneren'){
       _this.telephone++;
+      _this.dayresultSaver();
        _this.telephonePoint = (_this.telephonePoint + 10);
       $('.pt-tel').show();
       $('.pt-tel').animo( {
@@ -183,7 +213,7 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
 
     }else if(type == 'uitdaging'){
       _this.challenge++;
-
+      _this.dayresultSaver();
       _this.challengePoint = (_this.challengePoint + 25);
       $('.ch-10').show();
       $('.ch-10').animo( {
@@ -288,7 +318,7 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
 
     }else if((type == 'uitdaging')&&(_this.challenge > 0)){
       _this.challenge--;
-
+      _this.dayresultSaver();
       $('.ch--10').show();
       $('.ch--10').animo( {
         animation: 'fadeInUp', duration: 1.4}, function() {
@@ -398,7 +428,6 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
         dailySession.push(dailyData);
         localStorage.setItem('dailyPoints', JSON.stringify(_this.points));
         localStorage.setItem('dailyData', JSON.stringify(dailySession));
-        $scope.showAlertSaved();
 
       }else{
 
@@ -485,7 +514,9 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
 
 
     } 
-  }  
+  }
+
+  this.dateFix();  
  
 };
 
