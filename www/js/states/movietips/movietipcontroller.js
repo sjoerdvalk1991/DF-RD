@@ -54,6 +54,10 @@ var movietipController = function($scope, $state, $rootScope, $ionicModal, $ioni
     $state.go($state.current, {}, {reload: true});
   }
 
+  this.stateChange = function(value){
+    $state.go('.movie', {value: value});
+  }
+
 
   this.addItem = function(form) {
     var newItem = {};

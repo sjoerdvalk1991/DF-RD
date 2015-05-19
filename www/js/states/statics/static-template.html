@@ -1,8 +1,8 @@
 <ion-view view-title="Kies een datum" ng-controller="StaticCtrl as staticCtrl">
 <ion-content>
 <div class="padding">
-		<div pickadate ng-model="myDate">
-		</div>
+	<div pickadate ng-model="myDate">
+	</div>
 </div>
 <div class="resultintro">
 	<h5 style="text-align: center;">Selecteer een datum om de presentaties bekijken.</h5>
@@ -23,7 +23,7 @@
 				      </svg>
 			    	</div>
 				    <div class="inline-block left plxxl">
-				    	<span class="result prs">{{staticCtrl.stop}}</span> Stops
+				    	<span class="result prs">{{staticCtrl.result.stop}}</span> Stops
 				    </div>
 		        </div>
 		      </div>
@@ -46,7 +46,7 @@
 
 					  </div>
 		        <div class="plxxl inline-block left">
-		          <span class="result prs">{{staticCtrl.challenge}}</span> uitdagingen
+		          <span class="result prs">{{staticCtrl.result.challenge}}</span> uitdagingen
 		        </div>
 		      </div>
 		      <div class="item item-body border-top">
@@ -63,7 +63,7 @@
 					    </svg>
 				    </div>
 		        <div class="plxxl left inline-block">
-		          <span class="result prs">{{staticCtrl.telephone}}</span> Telefoontjes
+		          <span class="result prs">{{staticCtrl.result.telephone}}</span> Telefoontjes
 
 		        </div>
 		      </div>
@@ -71,7 +71,7 @@
 		        <div style="text-align: left;">
 		        	<span class="ion-chatbubble left chat"><span class="ion-close close"></span></span>
 		        	<div class="plxxl inline-block">
-			          <span class="result prs">{{staticCtrl.stutter}}</span> Stotters
+			          <span class="result prs">{{staticCtrl.result.stutter}}</span> Stotters
 		          </div>
 		        </div>
 		      </div>

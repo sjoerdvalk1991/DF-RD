@@ -24,13 +24,20 @@ var staticController = function($rootScope, $scope, $state, $ionicPopup, $ionicM
     for (; i < _this.results.length; i++) {
       if(_this.results[i].date == date){
         _this.result = _this.results[i];
+        console.log(_this.results[i]);
         _this.showResult();
 
-          
+      }else{
+
       }
     }
 
   };
+
+  this.getResult = function(){
+    return _this.result;
+
+  }
 
   $scope.slideChanged = function(index) {
     console.log(index);
@@ -80,7 +87,10 @@ var staticController = function($rootScope, $scope, $state, $ionicPopup, $ionicM
     console.log(height);
   }
       
-
+  this.newState = function(){
+    $('.slidy').removeClass('visib');
+    $('.resultintro').show();
+  }
 
 
   this.showResult = function(){
@@ -94,13 +104,19 @@ var staticController = function($rootScope, $scope, $state, $ionicPopup, $ionicM
     _this.equalHeight();
   }
 
-  this.setDate = function(d){
-    var modal = d.date;
-    _this.date = modal;
-    console.log('test');
-    _this.closedateModal(modal);
-  }
+    $rootScope.$on('getDate',function(event, args){
+      var modal = args.date;
+      _this.closedateModal(modal);
+    });
 
+
+  //   var modal = d.date;
+  //   _this.date = modal;
+  //   console.log('test');
+  //   _this.closedateModal(modal);
+  // }
+
+  this.newState();
    
 };
 

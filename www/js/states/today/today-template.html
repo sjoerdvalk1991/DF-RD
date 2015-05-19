@@ -104,15 +104,27 @@
 
     <div class="list card no-mt">
       <div class="item item-divider">Doel van vandaag</div>
-      <div class="pal">
+      <div class="pal set-goal">
       	Stel je doel in voor vandaag en daag jezelf uit!
       </div>
-      <div class="item item-body" ng-click="">
+      <div class="item item-body set-goal" ng-click="todayCtrl.showAddChangeDialog('add')">
         <div>
          	<span class=>Doel voor vandaag stellen
          	<span class="icon ion-plus plus-button"></span> 
         </div>
       </div>
+      <div class="item item-body border-top" ng-repeat="item in todayCtrl.goals" ng-click="todayCtrl.goalIncrease()">
+        <div>
+        	<span class="ion-chatbubble chat"></span>
+	        	<div class="plxxl inline-block">
+		          <span class="result prs">{{item.count}}x</span>{{item.title}}
+		          <span class="icon ion-plus plus-button"></span>
+	          	</div>
+	         <div class="goalbar"></div> 	
+        </div>
+
+      </div>
+
     </div>
   </ion-content>
 </ion-view>

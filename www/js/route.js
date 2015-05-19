@@ -4,6 +4,7 @@ var app = angular.module('starter', [
   'today.controller',
   'static.controller',
   'movietips.controller',
+  'movie.controller',
   'single.controller',
   'pickadate'
  ]);
@@ -48,6 +49,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
       views: {
         'tab-chats': {
           templateUrl: "js/states/statics/single-template.html",
+        }
+      }
+    })
+
+    .state('tab.movie', {
+      url:"/movie/:value",
+      views: {
+        'tab-chats': {
+          templateUrl: "js/states/movietips/movie-template.html",
         }
       }
     })

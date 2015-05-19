@@ -41,7 +41,7 @@
 
   angular.module('pickadate', ['pickadate.utils'])
 
-    .directive('pickadate', ['$locale', 'pickadateUtils', 'dateFilter', function($locale, dateUtils, dateFilter) {
+    .directive('pickadate', ['$locale', 'pickadateUtils', 'dateFilter', '$rootScope', function($locale, dateUtils, dateFilter, $rootScope) {
       return {
         require: 'ngModel',
         scope: {
@@ -51,7 +51,7 @@
           disabledDates: '='
         },
         template:
-          '<div class="pickadate" ng-controller="StaticCtrl as staticCtrl">' +
+          '<div class="pickadate">' +
             '<div class="pickadate-header">' +
               '<div class="pickadate-controls">' +
                 '<a href="" class="pickadate-prev" ng-click="changeMonth(-1)" ng-show="allowPrevMonth">Vorige</a>' +
@@ -69,7 +69,7 @@
                   '</li>' +
                 '</ul>' +
                 '<ul class="pickadate-cell">' +
-                  '<li ng-repeat="d in dates" ng-click="staticCtrl.setDate(d)" class="{{d.className}}" ng-class="{\'pickadate-active\': date == d.date}">' +
+                  '<li ng-repeat="d in dates" ng-click="getDate(d)" class="{{d.className}}" ng-class="{\'pickadate-active\': date == d.date}">' +
                     '{{d.date | date:"d"}}' +
                   '</li>' +
                 '</ul>' +
@@ -183,6 +183,11 @@
             scope.render(currentDate);
             scope.month = month;
           };
+
+          scope.getDate = function(d){
+            $rootScope.$broadcast('getDate', d);
+            
+          }
 
           scope.changeMonth = function (offset) {
             // If the current date is January 31th, setting the month to date.getMonth() + 1

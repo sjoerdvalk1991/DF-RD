@@ -6,21 +6,35 @@
       <a class="text-nodeco" href="#/app/tip/{{item.title}}">
         <ion-item class="item item-thumbnail-left">
           <img style="width: 120px; height: 60px;" class="" ng-src="img/DF-logo.png">
-          <h2>{{item.title}}</h2>
+          <h3 class="mtl">{{item.title}}</h3>
           <p>{{item.text}}</p>
         </ion-item>
       </a>  
        <a class="text-nodeco" href="#/movie">
         <ion-item class="item item-thumbnail-left">
           <img style="width: 100; height: 100%;" class="full-radius" src="img/delferro-oefening.jpg">
-          <h2>Video staande oefening</h2>
+          <h3 class="mtl">Video staande oefening</h3>
           <p>Bekijk de video van de staande oefening ging</p>
         </ion-item>
-      </a>  
+      </a>
+      <a class="text-nodeco" href="#/movie">
+        <ion-item class="item item-thumbnail-left">
+          <img style="width: 100; height: 100%;" class="full-radius" src="img/delferro-oefening.jpg">
+          <h3 class="mtl">Video zittende oefening</h3>
+          <p>Bekijk de video van de staande oefening ging</p>
+        </ion-item>
+      </a>
+      <a class="text-nodeco" href="#/movie">
+        <ion-item class="item item-thumbnail-left">
+          <img style="width: 100; height: 100%;" class="full-radius" src="img/delferro-oefening.jpg">
+          <h3 class="mtl">Video liggende oefening</h3>
+          <p>Bekijk de video van de staande oefening ging</p>
+        </ion-item>
+      </a>    
   	  </ion-list>  
       <div class="row text-center">
   			<div class="col col-40"> 
-       		<button class="button-block right button button-positive icon ion-plus" ng-click="tipsCtrl.showAddChangeDialog('add')">  Voeg een tip toe
+       		<button class="button-block right button button-positive icon ion-plus" ng-click="movieCtrl.showAddChangeDialog('add')">  Voeg een tip toe
    				</button> 
   	 		</div>
      	</div>

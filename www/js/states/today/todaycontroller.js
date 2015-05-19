@@ -1,6 +1,6 @@
 var app = angular.module('today.controller', []);
 
-var todayController = function($rootScope, $scope, $ionicPopup, $filter){
+var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicModal, $ionicHistory, $filter){
   var _this = this;
   this.stutter = 0;
   this.stop = 0;
@@ -15,6 +15,82 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
   this.points = 0;
   this.telephone = 0;
   this.today = {};
+  this.items = '';
+  this.item = '';
+  this.lastPhoto = [];
+  this.goals = JSON.parse(localStorage.getItem('goalAr'));
+  this.photo = false;
+
+  $ionicModal.fromTemplateUrl('js/states/today/add-goal.html', function(modalform) {
+    $scope.addDialog = modalform;
+  }, {
+    scope: $scope,
+    animation: 'slide-in-up',
+  });
+
+  $scope.$on('$destroy', function() {
+    $scope.addDialog.remove();
+  });
+
+
+  this.loaded = function(){
+    $('.all-content').fadeIn();
+    $('.all-content').animo( { animation: 'fadeInRight', duration: 0.4 });
+  }
+
+  this.showAddChangeDialog = function(action) {
+    $scope.action = action;
+    $scope.addDialog.show();
+  }
+
+  this.leaveAddChangeDialog = function(newItem) {
+    
+  if(newItem != null){
+
+    if(_this.goals){
+       var goalAr = _this.goals;
+       goalAr.push(newItem);
+       localStorage.setItem('goalAr', JSON.stringify(goalAr));
+
+
+      
+    }else{
+      var goalAr = [];
+      goalAr.push(newItem);
+      localStorage.setItem('goalAr', JSON.stringify(goalAr));
+    }
+
+  }  
+
+    $scope.addDialog.hide();
+    _this.goals = JSON.parse(localStorage.getItem('goalAr'));
+    _this.getGoal();
+    $state.go($state.current, {}, {reload: true});
+    $('.set-goal').hide();
+
+
+  }
+
+
+
+  this.addItem = function(form) {
+    var newItem = {};
+    // Add values from form to object
+    newItem.count = form.count.$modelValue;
+    newItem.title = form.title.$modelValue;
+    
+
+    // If this is the first item it will be the default item
+    if (newItem.title.length == 0) {
+      newItem.useAsDefault = true;
+    } else {
+      _this.leaveAddChangeDialog(newItem);
+      if (newItem.useAsDefault) {
+        
+      }
+    }
+  }
+ 
 
   this.practise = [
     { text: "Oefeningen gedaan", checked: false }
@@ -406,7 +482,7 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
       savedData.push(dailyData);
       localStorage.setItem('dailyPoints', JSON.stringify(_this.points));
       localStorage.setItem('dailyData', JSON.stringify(savedData));
-      $scope.showAlertSaved();
+      
     }else{
       var dailySession = JSON.parse(localStorage.getItem('dailyData'));
       var dailyCount = dailySession[(dailySession.length -1)];
@@ -465,9 +541,8 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
   }
 
   this.goalIncrease = function(){
-
     _this.reachedCount = _this.reachedCount + 1;
-
+    _this.goals[0].count--;
     var count =_this.goalCount;
     var reached = count;
     _this.goalCount = reached;
@@ -486,6 +561,12 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
     }
 
   }
+
+
+  this.goalChecker = function(){
+
+  }
+
 
   this.goalCompleted = function(){
     $('.goal-section').animo( {
@@ -515,12 +596,13 @@ var todayController = function($rootScope, $scope, $ionicPopup, $filter){
 
     } 
   }
-
-  this.dateFix();  
+  if(JSON.parse(localStorage.getItem('dailyData'))){
+    this.dateFix();  
+  }
  
 };
 
 
 
-todayController.$inject = ['$rootScope', '$scope', '$ionicPopup', '$filter'];
+todayController.$inject = ['$rootScope', '$scope', '$state', '$ionicPopup', '$ionicModal', '$ionicHistory', '$filter'];
 app.controller('TodayCtrl', todayController);
