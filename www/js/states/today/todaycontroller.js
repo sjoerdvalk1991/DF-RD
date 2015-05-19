@@ -13,6 +13,7 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
   this.telephonePoint = 0;
   this.challenge = 0;
   this.points = 0;
+  this.goal = '';
   this.telephone = 0;
   this.today = {};
   this.items = '';
@@ -47,8 +48,8 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
     
   if(newItem != null){
 
-    if(_this.goals){
-       var goalAr = _this.goals;
+    if(JSON.parse(localStorage.getItem('goalAr'))){
+      var goalAr = JSON.parse(localStorage.getItem('goalAr'));
        goalAr.push(newItem);
        localStorage.setItem('goalAr', JSON.stringify(goalAr));
 
@@ -78,7 +79,9 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
     // Add values from form to object
     newItem.count = form.count.$modelValue;
     newItem.title = form.title.$modelValue;
-    
+    newItem.date = _this.today;
+    newItem.goalCount = form.count.$modelValue;
+    newItem.reachedCount = 0;
 
     // If this is the first item it will be the default item
     if (newItem.title.length == 0) {
@@ -528,43 +531,71 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
     if(JSON.parse(localStorage.getItem('goalAr'))){
       var goalAr = JSON.parse(localStorage.getItem('goalAr'));
 
-      var goal = goalAr[0].title;
-      var count = goalAr[0].count;
+      _this.goal = goalAr[goalAr.length-1].title;
+      var count = goalAr[goalAr.length-1].count;
 
-      _this.goalCount = count;
-      _this.reachedGoalCount = count;
-
-      return goal;
+      _this.goalCount = goalAr[goalAr.length-1].goalCount;
+      _this.reachedGoalCount = goalAr[goalAr.length-1].reachedCount;
 
 
     }
   }
 
   this.goalIncrease = function(){
-    _this.reachedCount = _this.reachedCount + 1;
-    _this.goals[0].count--;
+    _this.reachedGoalCount = _this.reachedGoalCount + 1;
     var count =_this.goalCount;
     var reached = count;
     _this.goalCount = reached;
     console.log(reached)
-    var percentage = (_this.reachedCount /  _this.goalCount);
+    var percentage = (_this.reachedGoalCount /  _this.goalCount);
     console.log(percentage);
     width = percentage * 100;
     $('.goalbar').animate({width: width+'%'});
-    
-    if(_this.reachedGoalCount > 1){
-    
-      _this.reachedGoalCount--;
-
-    }else{
-      _this.goalCompleted();
+    var goalAr = JSON.parse(localStorage.getItem('goalAr'));
+    goalAr.splice(-1, 1);
+    var newItem = {
+      'count' : _this.goalCount,
+      'title' : _this.goal,
+      'date' : _this.today,
+      'goalCount' : _this.goalCount,
+      'reachedCount' : _this.reachedGoalCount  
     }
+    goalAr.push(newItem);
+    localStorage.setItem('goalAr', JSON.stringify(goalAr)); 
+  
 
+  }
+
+  this.calcGoal = function(){
+    if(JSON.parse(localStorage.getItem('goalAr'))){
+      var goalAr = JSON.parse(localStorage.getItem('goalAr'));
+
+      _this.goal = goalAr[goalAr.length-1].title;
+      var count = goalAr[goalAr.length-1].count;
+
+      _this.goalCount = goalAr[goalAr.length-1].goalCount;
+      _this.reachedGoalCount = goalAr[goalAr.length-1].reachedCount;
+      var count =_this.goalCount;
+      var reached = count;
+      _this.goalCount = reached;
+      console.log(reached)
+      var percentage = (_this.reachedGoalCount /  _this.goalCount);
+      console.log(percentage);
+      width = percentage * 100;
+      $('.goalbar').animate({width: width+'%'});
+
+    }
   }
 
 
   this.goalChecker = function(){
-
+    if(JSON.parse(localStorage.getItem('goalAr'))){
+      var goalAr = JSON.parse(localStorage.getItem('goalAr'));
+      var date = goalAr[goalAr.length-1].date;
+      if(_this.today == date){
+        _this.calcGoal();
+      }
+    }  
   }
 
 
@@ -598,6 +629,7 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
   }
   if(JSON.parse(localStorage.getItem('dailyData'))){
     this.dateFix();  
+    this.goalChecker();
   }
  
 };
