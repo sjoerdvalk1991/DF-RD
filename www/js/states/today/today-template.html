@@ -113,14 +113,14 @@
          	<span class="icon ion-plus plus-button"></span> 
         </div>
       </div>
-      <div class="item item-body border-top" ng-repeat="item in todayCtrl.goals" ng-click="todayCtrl.goalIncrease()">
+      <div class="item item-body border-top goal-isthere" ng-click="todayCtrl.goalIncrease()">
         <div>
         	<span class="ion-chatbubble chat"></span>
 	        	<div class="plxxl inline-block">
-		          <span class="result prs">{{todayCtrl.goalCount}}x</span>{{item.title}}
+		          <span class="result prs">{{todayCtrl.templateCount}}x</span>{{todayCtrl.goal}}
 		          <span class="icon ion-plus plus-button"></span>
 	          	</div>
-	         <div class="goalbar"></div> 	
+	         <div class="goalbar" style="width: {{todayCtrl.barWidth}}%;"></div> 	
         </div>
 
       </div>

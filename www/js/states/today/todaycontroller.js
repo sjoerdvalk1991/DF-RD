@@ -7,6 +7,8 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
   this.stopPoint = 0;
   this.dailyGoal = {};
   this.goalCount = 0;
+  this.barWidth = 0;
+  this.templateCount = {};
   this.reachedCount = 0;
   this.reachedGoalCount = 0;
   this.challengePoint = 0;
@@ -67,6 +69,7 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
     _this.goals = JSON.parse(localStorage.getItem('goalAr'));
     _this.getGoal();
     $state.go($state.current, {}, {reload: true});
+    $('.goal-isthere').show();
     $('.set-goal').hide();
 
 
@@ -89,7 +92,7 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
     } else {
       _this.leaveAddChangeDialog(newItem);
       if (newItem.useAsDefault) {
-        
+          
       }
     }
   }
@@ -133,6 +136,7 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
       _this.challenge = dailyData.challenge;
       _this.practise[0].checked = dailyData.practise;
       _this.consequent[0].checked = dailyData.consequent;
+      _this.points = dailyData.points;
     }else{
 
     }
@@ -518,6 +522,7 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
           'telephone': _this.telephone,
           'practise': _this.practise[0].checked,
           'consequent': _this.consequent[0].checked,
+          'points': _this.points
         }
 
         dailySession.push(dailyData);
@@ -536,7 +541,7 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
 
       _this.goalCount = goalAr[goalAr.length-1].goalCount;
       _this.reachedGoalCount = goalAr[goalAr.length-1].reachedCount;
-
+      _this.templateCount = (_this.goalCount - _this.reachedGoalCount);
 
     }
   }
@@ -560,21 +565,26 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
       'goalCount' : _this.goalCount,
       'reachedCount' : _this.reachedGoalCount  
     }
+
     goalAr.push(newItem);
     localStorage.setItem('goalAr', JSON.stringify(goalAr)); 
-  
+    _this.calcGoal();
+
+    
 
   }
 
   this.calcGoal = function(){
     if(JSON.parse(localStorage.getItem('goalAr'))){
       var goalAr = JSON.parse(localStorage.getItem('goalAr'));
+      console.log('test');
 
       _this.goal = goalAr[goalAr.length-1].title;
       var count = goalAr[goalAr.length-1].count;
 
       _this.goalCount = goalAr[goalAr.length-1].goalCount;
       _this.reachedGoalCount = goalAr[goalAr.length-1].reachedCount;
+      _this.templateCount = (_this.goalCount - _this.reachedGoalCount);
       var count =_this.goalCount;
       var reached = count;
       _this.goalCount = reached;
@@ -582,8 +592,10 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
       var percentage = (_this.reachedGoalCount /  _this.goalCount);
       console.log(percentage);
       width = percentage * 100;
-      $('.goalbar').animate({width: width+'%'});
-
+        _this.barWidth = width;
+        if(width == 100){
+          this.goalCompleted(); 
+        }
     }
   }
 
@@ -593,13 +605,18 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
       var goalAr = JSON.parse(localStorage.getItem('goalAr'));
       var date = goalAr[goalAr.length-1].date;
       if(_this.today == date){
+        $('.goal-isthere').show();
+        $('.set-goal').hide();
         _this.calcGoal();
       }
+    }else{
+      $('.goal-isthere').hide();
     }  
   }
 
 
   this.goalCompleted = function(){
+    console.log('test');
     $('.goal-section').animo( {
     animation: 'fadeOutRight', duration: 0.4}, function() {
       $('.goal-section').hide(); 
@@ -629,9 +646,9 @@ var todayController = function($rootScope, $scope, $state, $ionicPopup, $ionicMo
   }
   if(JSON.parse(localStorage.getItem('dailyData'))){
     this.dateFix();  
-    this.goalChecker();
+    
   }
- 
+ this.goalChecker();
 };
 
 
